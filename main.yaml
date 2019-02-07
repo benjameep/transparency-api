@@ -1,45 +1,213 @@
----
-swagger: "2.0"
+swagger: '2.0'
 info:
-  description: "Trasnparency "
-  version: "0.0.0 "
-  title: "Transparency"
-host: "docs.aintfor.me"
-basePath: "/v0"
+  description: A brief API List for the Transparency Database
+  version: '0.0.1 '
+  title: Transparency Database API
+host: docs.aintfor.me
+basePath: /v0
 schemes:
-- "https"
-
+  - https
 paths:
   /users:
     get:
       tags:
-        - "User"
-      summary: "Returns a list of users."
+        - User
+      summary: Returns a list of all users.
       produces:
-        - "application/json"
+        - application/json
       responses:
-        200:
-          description: "OK!"
+        '200':
+          description: OK!
   /users/create:
     post:
       tags:
-        - "User"
-      summary: "Create a user account."
+        - User
+      summary: Create a user account.
       responses:
-        200:
-          description: "Ok!"
-  /users/{userID}:
-    post:
+        '200':
+          description: Ok!
+  '/users/{userID}':
+    get:
       tags:
-        - "User"
-      summary: "Create a user account."
+        - User
+      summary: Pulls user data to display
       responses:
-        200:
-          description: "Ok!"
+        '200':
+          description: Ok!
       parameters:
         - in: path
           name: userID
           required: true
           type: integer
           format: int64
-          
+  '/users/{userID}/update':
+    put:
+      tags:
+        - User
+      summary: Update and change the user account.
+      responses:
+        '200':
+          description: Ok!
+      parameters:
+        - in: path
+          name: userID
+          required: true
+          type: integer
+          format: int64
+  '/users/{userID}/suspend':
+    post:
+      tags:
+        - User
+      summary: Admins can suspend user accounts.
+      responses:
+        '200':
+          description: Ok!
+      parameters:
+        - in: path
+          name: userID
+          required: true
+          type: integer
+          format: int64
+  /projects:
+    get:
+      tags:
+        - Projects
+      summary: Returns a list of all projects.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK!
+  '/projects/{projectID}':
+    get:
+      tags:
+        - Projects
+      summary: Returns a project's details.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK!
+      parameters:
+        - in: path
+          name: projectID
+          required: true
+          type: integer
+          format: int64
+  '/projects/{projectID}/create':
+    post:
+      tags:
+        - Projects
+      summary: Create a project suggestion (Normal user)
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK!
+      parameters:
+        - in: path
+          name: projectID
+          required: true
+          type: integer
+          format: int64
+  '/projects/{projectID}/publish':
+    post:
+      tags:
+        - Projects
+      summary: Publish a suggested project as an official project (Admin).
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK!
+      parameters:
+        - in: path
+          name: projectID
+          required: true
+          type: integer
+          format: int64
+  '/projects/{projectID}/contribute':
+    post:
+      tags:
+        - Projects
+      summary: Contribute hours to a project.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK!
+      parameters:
+        - in: path
+          name: projectID
+          required: true
+          type: integer
+          format: int64
+  '/projects/{projectID}/update':
+    put:
+      tags:
+        - Projects
+      summary: Update Project Details (Admin)
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK!
+      parameters:
+        - in: path
+          name: projectID
+          required: true
+          type: integer
+          format: int64
+  '/project/{projectID}/donations':
+    get:
+      tags:
+        - Donations
+      summary: Returns a list of all the donations towards a project.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK!
+      parameters:
+        - in: path
+          name: projectID
+          required: true
+          type: integer
+          format: int64
+  '/project/{projectID}/donations/{donationID}':
+    get:
+      tags:
+        - Donations
+      summary: Get the details of a specific donation.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK!
+      parameters:
+        - in: path
+          name: projectID
+          required: true
+          type: integer
+          format: int64
+        - in: path
+          name: donationID
+          required: true
+          type: integer
+          format: int64
+  '/project/{projectID}/donations/create':
+    post:
+      tags:
+        - Donations
+      summary: creates a donation towards a specific project.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK!
+      parameters:
+        - in: path
+          name: projectID
+          required: true
+          type: integer
+          format: int64
