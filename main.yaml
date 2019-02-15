@@ -6,26 +6,39 @@ info:
 host: docs.aintfor.me
 basePath: /v0
 schemes:
+  - http
   - https
+tags:
+  - name: User
+  - name: Store
+  - name: Projects
+  - name: Donations
+consumes:
+  - application/json
+produces:
+  - application/json
 paths:
   /users:
     get:
       tags:
         - User
       summary: Returns a list of all users.
-      produces:
-        - application/json
       responses:
         '200':
-          description: OK!
-  /users/create:
+          description: ok
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
     post:
       tags:
         - User
       summary: Create a user account.
       responses:
         '200':
-          description: Ok!
+          description: ok
+          schema:
+            $ref: '#/definitions/User'
   '/users/{userID}':
     get:
       tags:
@@ -33,21 +46,19 @@ paths:
       summary: Pulls user data to display
       responses:
         '200':
-          description: Ok!
+          description: ok
       parameters:
         - in: path
           name: userID
           required: true
-          type: integer
-          format: int64
-  '/users/{userID}/update':
+          type: string
     put:
       tags:
         - User
       summary: Update and change the user account.
       responses:
         '200':
-          description: Ok!
+          description: ok
       parameters:
         - in: path
           name: userID
@@ -61,7 +72,7 @@ paths:
       summary: Admins can suspend user accounts.
       responses:
         '200':
-          description: Ok!
+          description: ok
       parameters:
         - in: path
           name: userID
@@ -73,21 +84,17 @@ paths:
       tags:
         - Projects
       summary: Returns a list of all projects.
-      produces:
-        - application/json
       responses:
         '200':
-          description: OK!
+          description: ok
   '/projects/{projectID}':
     get:
       tags:
         - Projects
       summary: Returns a project's details.
-      produces:
-        - application/json
       responses:
         '200':
-          description: OK!
+          description: ok
       parameters:
         - in: path
           name: projectID
@@ -99,11 +106,9 @@ paths:
       tags:
         - Projects
       summary: Create a project suggestion (Normal user)
-      produces:
-        - application/json
       responses:
         '200':
-          description: OK!
+          description: ok
       parameters:
         - in: path
           name: projectID
@@ -119,7 +124,7 @@ paths:
         - application/json
       responses:
         '200':
-          description: OK!
+          description: ok
       parameters:
         - in: path
           name: projectID
@@ -135,7 +140,7 @@ paths:
         - application/json
       responses:
         '200':
-          description: OK!
+          description: ok
       parameters:
         - in: path
           name: projectID
@@ -151,7 +156,7 @@ paths:
         - application/json
       responses:
         '200':
-          description: OK!
+          description: ok
       parameters:
         - in: path
           name: projectID
@@ -167,7 +172,7 @@ paths:
         - application/json
       responses:
         '200':
-          description: OK!
+          description: ok
       parameters:
         - in: path
           name: projectID
@@ -183,7 +188,7 @@ paths:
         - application/json
       responses:
         '200':
-          description: OK!
+          description: ok
       parameters:
         - in: path
           name: projectID
@@ -204,10 +209,70 @@ paths:
         - application/json
       responses:
         '200':
-          description: OK!
+          description: ok
       parameters:
         - in: path
           name: projectID
           required: true
           type: integer
           format: int64
+securityDefinitions:
+  OAuth2:
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: https://docs.aintfor.me/oauth/authorize
+    tokenUrl: https://docs.aintfor.me/oauth/token
+    scopes:
+      read: Grants read access
+      write: Grants write access
+      admin: Grants read and write access to administrative information
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+        example: '23891'
+      username:
+        type: string
+        example: john32
+      firstName:
+        type: string
+        example: John
+      lastName:
+        type: string
+        example: Doe
+      email:
+        type: string
+        format: email
+        example: john@example.com
+      phone:
+        type: string
+        format: phone
+        example: 000-000-0000
+      mailing:
+        $ref: '#/definitions/Address'
+      billing:
+        $ref: '#/definitions/Address'
+    xml:
+      name: User
+  Address:
+    type: object
+    properties:
+      line1:
+        type: string
+        example: 100 example st.
+      line2:
+        type: string
+        example: 'apt #1'
+      city:
+        type: string
+        example: Springfield
+      state:
+        type: string
+        pattern: '/^[A-Z]{2}$/'
+        example: AL
+      zipcode:
+        type: string
+        pattern: '/^\d{5}(-\d{4})?$/'
+        example: 00000-0000
